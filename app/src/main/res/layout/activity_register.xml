@@ -10,17 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    >
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="227dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        app:srcCompat="@mipmap/ic_launcher_foreground"
-        tools:ignore="VectorDrawableCompat" />
-
+    tools:context="ir.mohammadi.MainActivity">
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/username"
@@ -28,6 +18,12 @@
         android:layout_height="wrap_content"
         android:hint="نام کاربری:" />
 
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ایمیل:"
+        android:inputType="textEmailAddress" />
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/password"
@@ -38,18 +34,19 @@
         android:textAlignment="textEnd"
         android:gravity="end" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login"
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/re_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ورود" />
+        android:hint=":تکرار کلمه عبور"
+        android:inputType="textPassword"
+        android:textAlignment="textEnd"
+        android:gravity="end" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/register"
+        android:id="@+id/register_now"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="gotoregisteractivity"
-        android:text="ثبت نام"
-        tools:ignore="OnClick" />
+        android:text="ثبت نام" />
 
 </LinearLayout>
