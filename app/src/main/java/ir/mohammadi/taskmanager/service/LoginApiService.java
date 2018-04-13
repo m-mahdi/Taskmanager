@@ -9,5 +9,9 @@ import retrofit2.http.POST;
 public interface LoginApiService {
         @POST("/auth/login")
 //    Call<LoginResponse> login(@Header("Authorization") String authorization);
-    Call<LoginResponse> login(@Header("X-Backtory-Authentication-Id") String authorization);
+    Call<LoginResponse> login(@Header("X-Backtory-Authentication-Id") String authorization,
+                              @Header("X-Backtory-Authentication-Key") String authorization2,
+                              @Field("username") String username,
+                              @Field("password") String pass);
+
 }
