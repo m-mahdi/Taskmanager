@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button button = (Button) findViewById(R.id.login);
+        final EditText u_name =(EditText) findViewById(R.id.username);
+        final EditText pass = (EditText) findViewById(R.id.password);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
 
-
+                        Toast.makeText(MainActivity.this, "login error", Toast.LENGTH_SHORT).show();
                         Log.i("Error", volleyError.getMessage());
                     }
                 }){
@@ -61,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("username", "mahdi74");
-                        params.put("password", "mahdi74");
-
+//                        params.put("username", "mahdi74");
+//                        params.put("password", "mahdi74");
+                        params.put("username", u_name.getText().toString());
+                        params.put("password", pass.getText().toString());
                         return params;
                     }
 
