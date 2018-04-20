@@ -33,6 +33,8 @@ dependencies {
     compile 'com.pegah.backtory:backtory-iap:0.6.6'
     compile 'com.pegah.backtory:backtory-google-login:0.6.6'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+
 }
 repositories {
     maven {
