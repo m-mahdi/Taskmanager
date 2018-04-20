@@ -33,11 +33,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.login);
+        Button login = (Button) findViewById(R.id.login);
+        final Button register = (Button) findViewById(R.id.register);
         final EditText u_name =(EditText) findViewById(R.id.username);
         final EditText pass = (EditText) findViewById(R.id.password);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
