@@ -10,23 +10,28 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="ir.mohammadi.MainActivity">
+    tools:context="ir.mohammadi.taskmanager.RegisterActivity">
 
     <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/username"
+        android:id="@+id/firstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="نام کاربری:" />
+        android:hint="نام :" />
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/email"
+      <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/lastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ایمیل:"
-        android:inputType="textEmailAddress" />
+        android:hint="نام خانوادگی :" />
+
+      <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/rej_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="نام کاربری :" />
 
     <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/password"
+        android:id="@+id/rej_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint=":کلمه عبور"
@@ -35,13 +40,20 @@
         android:gravity="end" />
 
     <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/re_password"
+        android:id="@+id/rej_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint=":تکرار کلمه عبور"
-        android:inputType="textPassword"
-        android:textAlignment="textEnd"
-        android:gravity="end" />
+        android:hint="ایمیل:"
+        android:inputType="textEmailAddress" />
+
+ <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="شماره تلفن:"
+        android:inputType="phone"
+        android:gravity="end"/>
+
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/register_now"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,22 +37,26 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final Button button =(Button) findViewById(R.id.register_now);
+        final EditText firstName =(EditText) findViewById(R.id.firstName);
+        final EditText lastName =(EditText) findViewById(R.id.lastName);
+        final EditText username =(EditText) findViewById(R.id.rej_username);
+        final EditText password =(EditText) findViewById(R.id.rej_password);
+        final EditText email =(EditText) findViewById(R.id.rej_email);
+        final EditText phoneNumber =(EditText) findViewById(R.id.phoneNumber);
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 final String url = "https://api.backtory.com/auth/users";
-                
                 final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("firstName", "mahdi");
-                params.put("lastName", "mohamamdi");
-                params.put("username", "mohamamdi");
-                params.put("password", "123456");
-                params.put("email", "m11@yaho.com");
-                params.put("phoneNumber", "444444487");
+                params.put("firstName", firstName.getText().toString());
+                params.put("lastName",lastName.getText().toString());
+                params.put("username", username.getText().toString());
+                params.put("password",password.getText().toString());
+                params.put("email", email.getText().toString());
+                params.put("phoneNumber", phoneNumber.getText().toString());
                 params.put("avatar", "mydomain.com/avatar.png");
 //
 
