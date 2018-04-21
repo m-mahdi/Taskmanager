@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import android.util.Log;
@@ -24,6 +25,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+
 import java.util.HashMap;
 import java.util.Map;
 public class MainActivity extends AppCompatActivity {
@@ -58,14 +63,20 @@ public class MainActivity extends AppCompatActivity {
 //                        Intent intent=new Intent(MainActivity.this,TestActivity.class);
 //                        startActivity(intent);
                         Log.i("Result", s);
-                    }
+                        Gson g = new Gson();
+                        HashMap<String,String> map  = new HashMap<>();
+                         HashMap map1= g.fromJson(s, HashMap.class);
+                         G.token =(String) map1.get("access_token");
+                        Toast.makeText(MainActivity.this, (String) map1.get("access_token"), Toast.LENGTH_SHORT).show();
+
+                           }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
 
                         Toast.makeText(MainActivity.this, "login error", Toast.LENGTH_SHORT).show();
-                        Log.i("Error", volleyError.getMessage());
+//                        Log.i("Error", volleyError.getMessage());
                     }
                 }){
 
