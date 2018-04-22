@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                         editor.commit();
 
                         String username = preferences.getString("user", null);
-//                        Toast.makeText(MainActivity.this, username, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, username, Toast.LENGTH_LONG).show();
                         Intent intent =new Intent(MainActivity.this,TaskActivity.class);
                         intent.putExtra("user", username);
                         startActivity(intent);
