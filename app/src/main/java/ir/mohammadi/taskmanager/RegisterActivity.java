@@ -66,6 +66,10 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 try {
                                     VolleyLog.v("Response:%n %s", response.toString(4));
+                                    Toast.makeText(RegisterActivity.this, "کاربر با موفقیت ثبت شد.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
+                                    startActivity(intent);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -73,6 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(RegisterActivity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
                         VolleyLog.e("Error: ", error.getMessage());
                     }
                 }){

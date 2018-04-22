@@ -2,6 +2,7 @@ package ir.mohammadi.taskmanager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
+    EditText u_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button login = (Button) findViewById(R.id.login);
         final Button register = (Button) findViewById(R.id.register);
-        final EditText u_name =(EditText) findViewById(R.id.username);
+        u_name =(EditText) findViewById(R.id.username);
         final EditText pass = (EditText) findViewById(R.id.password);
 
         register.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +69,20 @@ public class MainActivity extends AppCompatActivity {
                         HashMap<String,String> map  = new HashMap<>();
                          HashMap map1= g.fromJson(s, HashMap.class);
                          G.token =(String) map1.get("access_token");
-                        Toast.makeText(MainActivity.this, (String) map1.get("access_token"), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, (String) map1.get("access_token"), Toast.LENGTH_SHORT).show();
+
+
+                        SharedPreferences preferences = getSharedPreferences("username_sp", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("user",u_name.getText().toString());
+                        editor.commit();
+
+                        String username = preferences.getString("user", null);
+//                        Toast.makeText(MainActivity.this, username, Toast.LENGTH_LONG).show();
+                        Intent intent =new Intent(MainActivity.this,TaskActivity.class);
+                        intent.putExtra("user", username);
+                        startActivity(intent);
+
 
                            }
                 }, new Response.ErrorListener() {
@@ -75,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
 
-                        Toast.makeText(MainActivity.this, "login error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "عدم صحت اطلاعات لطفا مجدد تلاش فرمایید.", Toast.LENGTH_SHORT).show();
 //                        Log.i("Error", volleyError.getMessage());
                     }
                 }){
