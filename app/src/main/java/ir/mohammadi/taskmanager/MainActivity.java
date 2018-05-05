@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button login = (Button) findViewById(R.id.login);
         final Button register = (Button) findViewById(R.id.register);
+        final Button task = (Button) findViewById(R.id.set_task);
         u_name =(EditText) findViewById(R.id.username);
         final EditText pass = (EditText) findViewById(R.id.password);
 
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+        task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Main2Activity.class);
                 startActivity(intent);
             }
         });
@@ -76,9 +84,10 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("user",u_name.getText().toString());
                         editor.commit();
+                        G.username=(String) u_name.getText().toString();
 
                         String username = preferences.getString("user", null);
-                        Toast.makeText(MainActivity.this, username, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(MainActivity.this, G.username, Toast.LENGTH_LONG).show();
                         Intent intent =new Intent(MainActivity.this,TaskActivity.class);
                         intent.putExtra("user", username);
                         startActivity(intent);

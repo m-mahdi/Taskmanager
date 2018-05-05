@@ -8,6 +8,7 @@ public class G extends Application {
     public static String baseUrl = "https://api.backtory.com/";
     public static Retrofit retrofit = null;
     public static String token;
+    public static String username;
 
     protected static G instance;
 

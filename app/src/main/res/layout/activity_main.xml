@@ -51,5 +51,11 @@
         android:onClick="gotoregisteractivity"
         android:text="ثبت نام"
         tools:ignore="OnClick" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/set_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ثبت کار"
+        tools:ignore="OnClick" />
 
 </LinearLayout>
