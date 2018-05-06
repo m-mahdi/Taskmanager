@@ -1,10 +1,15 @@
 package ir.mohammadi.taskmanager;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +42,7 @@ import java.util.Map;
 
 public class TaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Context context=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +61,7 @@ public class TaskActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                customdialog();
             }
         });
 
@@ -72,72 +79,15 @@ public class TaskActivity extends AppCompatActivity
 
 
 
-        final Button button =(Button) findViewById(R.id.send_task);
+//        final Button button =(Button) findViewById(R.id.send_task);
         final EditText task_name =(EditText) findViewById(R.id.task_name);
         final EditText desc =(EditText) findViewById(R.id.desc);
 //        final String user_intent = getIntent().getExtras().getString("user");
 //        SharedPreferences preferences = getSharedPreferences("username_sp", MODE_PRIVATE);
 //        String usename = preferences.getString("user", null);
 
-        button.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                final String url = "https://api.backtory.com/object-storage/classes/tasks";
-                final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("name", task_name.getText().toString());
-                params.put("description",desc.getText().toString());
-                params.put("userID",G.username);
-//                Toast.makeText(TaskActivity.this,G.username,Toast.LENGTH_SHORT).show();
-//                params.put("password",password.getText().toString());
-//                params.put("email", email.getText().toString());
-//                params.put("phoneNumber", phoneNumber.getText().toString());
-//                params.put("avatar", "mydomain.com/avatar.png");
-
-                JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(params),
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    VolleyLog.v("Response:%n %s", response.toString(4));
-                                    Toast.makeText(TaskActivity.this, "کار با موفقیت ثبت شد.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(TaskActivity.this,TaskActivity.class);
-                                    startActivity(intent);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(TaskActivity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
-                        VolleyLog.e("Error: ", error.getMessage());
-
-                    }
-                }){
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-//
-                        HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Authorization", "Bearer "+G.token);
-                        headers.put("X-Backtory-Object-Storage-Id", "5a9314fce4b092a32b632af9");
-                        return headers;
-                    }
-
-                };
-                requestQueue.add(req);
             }
-
-        });
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -177,7 +127,8 @@ public class TaskActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent=new Intent(TaskActivity.this,Main2Activity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
 
@@ -186,5 +137,92 @@ public class TaskActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
+
+    }
+    private void  customdialog(){
+
+        LayoutInflater inflater=LayoutInflater.from(context);
+        View view =inflater.inflate(R.layout.dialog_add,null);
+
+
+        AlertDialog.Builder aBuilder=new AlertDialog.Builder(context);
+        aBuilder.setView(view);
+        aBuilder.setCancelable(false);
+        aBuilder.setPositiveButton("ثبت",null);
+        aBuilder.setNegativeButton("بیخیال",null);
+        final AlertDialog alertDialog =aBuilder.create();
+        final EditText task_name=(EditText)view.findViewById(R.id.task_name);
+        final EditText description=(EditText)view.findViewById(R.id.desc);
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button btnposetive  =alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                btnposetive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                final String url = "https://api.backtory.com/object-storage/classes/tasks";
+                final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", task_name.getText().toString());
+                params.put("description",description.getText().toString());
+                params.put("userID",G.username);
+
+                    JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        VolleyLog.v("Response:%n %s", response.toString(4));
+                                        Toast.makeText(TaskActivity.this, "کار با موفقیت ثبت شد.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(TaskActivity.this, TaskActivity.class);
+                                        startActivity(intent);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(TaskActivity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
+                            VolleyLog.e("Error: ", error.getMessage());
+
+                        }
+                    }) {
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+//
+                            HashMap<String, String> headers = new HashMap<String, String>();
+                            headers.put("Authorization", "Bearer " + G.token);
+                            headers.put("X-Backtory-Object-Storage-Id", "5a9314fce4b092a32b632af9");
+                            return headers;
+                        }
+
+                    };
+                    requestQueue.add(req);
+
+
+                    alertDialog.dismiss();
+                }
+            });
+            Button btnnegtive =alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            btnnegtive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                        Toast.makeText(TaskActivity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
+                    alertDialog.dismiss();
+                }
+            });
+            }
+        });
+        alertDialog.getWindow().setBackgroundDrawable(getResources().getDrawable( R.drawable.rounded_linear));
+        alertDialog.show();
     }
 }
