@@ -26,17 +26,19 @@
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="نام کاربری:" />
+        android:hint="نام کاربری:"
+        android:text="mahdi" />
 
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:hint=":کلمه عبور"
         android:inputType="textPassword"
-        android:textAlignment="textEnd"
-        android:gravity="end" />
+        android:text="mahdi"
+        android:textAlignment="textEnd" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/login"
