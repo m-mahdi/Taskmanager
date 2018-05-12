@@ -38,7 +38,7 @@ import ir.mohammadi.taskmanager.model.Tasks;
 
 public class Main2Activity extends AppCompatActivity {
 
-    String[] test;
+//    String[] test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +105,7 @@ public class Main2Activity extends AppCompatActivity {
 //
 //                                        list.add((String) map1.get("name"));
 //                                    }
-                                    Toast.makeText(Main2Activity.this, tasks.get(1).getName(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Main2Activity.this, tasks.get(3).getName(), Toast.LENGTH_SHORT).show();
 //                                    if (task.getDescription() != null)
 
 //                                    Toast.makeText(Main2Activity.this, "کاربر با موفقیت ثبت شد.", Toast.LENGTH_SHORT).show();
