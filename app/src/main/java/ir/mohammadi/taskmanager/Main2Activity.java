@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,10 +34,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ir.mohammadi.taskmanager.adapter.TaskAdapter;
 import ir.mohammadi.taskmanager.model.Task;
 import ir.mohammadi.taskmanager.model.Tasks;
 
 public class Main2Activity extends AppCompatActivity {
+    ListView listView;
+    TaskAdapter adapter;
 
 //    String[] test;
     @Override
@@ -90,11 +94,18 @@ public class Main2Activity extends AppCompatActivity {
                                             HashMap map1= g.fromJson(explrObject.toString(), HashMap.class);
 //                                        G.token =(String) map1.get("access_token");
                                             Task task =new Task();
-                                            task.setName((String) map1.get("description"));
+                                            task.setDescription((String) map1.get("description"));
                                             task.setName((String) map1.get("name"));
                                             tasks.add(task);
 
                                         }
+
+//                                    adapter.notifyDataSetChanged();
+                                    Toast.makeText(Main2Activity.this, tasks.size()+"", Toast.LENGTH_SHORT).show();
+                                        adapter=new TaskAdapter(tasks,Main2Activity.this);
+                                    ListView listView = (ListView) findViewById(R.id.listView);
+                                        listView.setAdapter(adapter);
+
 
 //                                    for (int i = 0; i < jsonArray.length(); i++) {
 //                                        JSONObject explrObject = jsonArray.getJSONObject(i);
@@ -105,16 +116,22 @@ public class Main2Activity extends AppCompatActivity {
 //
 //                                        list.add((String) map1.get("name"));
 //                                    }
-                                    Toast.makeText(Main2Activity.this, tasks.get(3).getName(), Toast.LENGTH_SHORT).show();
+
+//                                    Toast.makeText(Main2Activity.this, tasks.get(3).getName(), Toast.LENGTH_SHORT).show();
+
+
+
 //                                    if (task.getDescription() != null)
 
 //                                    Toast.makeText(Main2Activity.this, "کاربر با موفقیت ثبت شد.", Toast.LENGTH_SHORT).show();
 //                                    Intent intent = new Intent(Main2Activity.this,TaskActivity.class);
 //                                    startActivity(intent);
 
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                             }
                         }, new Response.ErrorListener() {
                     @Override

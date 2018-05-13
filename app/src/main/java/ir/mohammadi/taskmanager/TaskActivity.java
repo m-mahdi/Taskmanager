@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,15 +38,22 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import ir.mohammadi.taskmanager.adapter.TaskAdapter;
+import ir.mohammadi.taskmanager.model.Task;
 
 public class TaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    ListView listView;
+    TaskAdapter adapter;
+    ArrayList<Task> tasks=new ArrayList<Task>();
     Context context=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -73,6 +81,10 @@ public class TaskActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+//        listView=(ListView)findViewById(R.id.listView);
+//        adapter=new TaskAdapter(this,tasks);
+//        listView.setAdapter(adapter);
+//        adapter=new TaskAdapter(TaskActivity.this,)
 
 //        set user to nav bar
         ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_nav)).setText(G.username);

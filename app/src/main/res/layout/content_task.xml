@@ -8,6 +8,11 @@
     tools:context="ir.mohammadi.taskmanager.TaskActivity"
     tools:showIn="@layout/app_bar_task">
 
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/task_item">
 
-
+    </ListView>
 </android.support.constraint.ConstraintLayout>
