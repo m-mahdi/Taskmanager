@@ -14,13 +14,18 @@ public class Task implements Serializable {
     @SerializedName("description")
     private String description;
 
-    public Task() {
-    }
+    @SerializedName("_id")
+    private String id;
 
-    public Task(String user_id, String name, String description) {
+    public Task() {
+
+    }
+    public Task(String user_id, String name, String description,String id) {
         this.user_id = user_id;
         this.name = name;
         this.description = description;
+        this.id=id;
+
     }
 
     public String getUser_id() {
@@ -31,6 +36,14 @@ public class Task implements Serializable {
     }
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {

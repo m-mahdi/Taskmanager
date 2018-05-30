@@ -48,7 +48,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        final Button button = (Button) findViewById(R.id.test);
+//        final Button button = (Button) findViewById(R.id.test);
 //        final EditText firstName =(EditText) findViewById(R.id.firstName);
 //        final EditText lastName =(EditText) findViewById(R.id.lastName);
 //        final EditText username =(EditText) findViewById(R.id.rej_username);
@@ -56,24 +56,20 @@ public class Main2Activity extends AppCompatActivity {
 //        final EditText email =(EditText) findViewById(R.id.rej_email);
 //        final EditText phoneNumber =(EditText) findViewById(R.id.phoneNumber);
 
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                final String url = "https://api.backtory.com/object-storage/classes/query/tasks";
-                final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userID", G.username);
-                Log.i("test1393", "onClick: ");
+        final String url = "https://api.backtory.com/object-storage/classes/query/tasks";
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userID", G.username);
+        Log.i("test1393", "onClick: ");
 //
 
-                JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(params),
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    VolleyLog.v("Response:%n %s", response.toString(4));
-                                    Log.i("test1393", "onResponse: " + response.toString(4));
+        JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+                            Log.i("test1393", "onResponse: " + response.toString(4));
 //                                    Toast.makeText(Main2Activity.this, response.toString(), Toast.LENGTH_SHORT).show();
 
 //                                    Log.i("Result", response.toString());
@@ -82,29 +78,30 @@ public class Main2Activity extends AppCompatActivity {
 //                                    HashMap map1 = g.fromJson(response.toString(), HashMap.class);
 //                                    Tasks tasks =  new Tasks((ArrayList<Task>) map1.get("results"));
 //                                    Task task = new Task();
-                                    JSONObject jsnobject = new JSONObject(response.toString());
-                                    JSONArray jsonArray = jsnobject.getJSONArray("results");
+                            JSONObject jsnobject = new JSONObject(response.toString());
+                            JSONArray jsonArray = jsnobject.getJSONArray("results");
 //                                    List<String> list = new ArrayList<>();
 //                                    String[] list =new String[]{};
-                                    List<Task> tasks = new ArrayList<>();
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject explrObject = jsonArray.getJSONObject(i);
-                                            Gson g = new Gson();
-                                            HashMap<String,String> map  = new HashMap<>();
-                                            HashMap map1= g.fromJson(explrObject.toString(), HashMap.class);
+                            List<Task> tasks = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject explrObject = jsonArray.getJSONObject(i);
+                                Gson g = new Gson();
+                                HashMap<String,String> map  = new HashMap<>();
+                                HashMap map1= g.fromJson(explrObject.toString(), HashMap.class);
 //                                        G.token =(String) map1.get("access_token");
-                                            Task task =new Task();
-                                            task.setDescription((String) map1.get("description"));
-                                            task.setName((String) map1.get("name"));
-                                            tasks.add(task);
+                                Task task =new Task();
+                                task.setDescription((String) map1.get("description"));
+                                task.setName((String) map1.get("name"));
+                                tasks.add(task);
 
-                                        }
+                            }
 
 //                                    adapter.notifyDataSetChanged();
-                                    Toast.makeText(Main2Activity.this, tasks.size()+"", Toast.LENGTH_SHORT).show();
-                                        adapter=new TaskAdapter(tasks,Main2Activity.this);
-                                    ListView listView = (ListView) findViewById(R.id.listView);
-                                        listView.setAdapter(adapter);
+//                            Toast.makeText(Main2Activity.this, tasks.size()+"", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Main2Activity.this, getTaskId(), Toast.LENGTH_SHORT).show();
+                            adapter=new TaskAdapter(tasks,Main2Activity.this);
+                            ListView listView = (ListView) findViewById(R.id.listView);
+                            listView.setAdapter(adapter);
 
 
 //                                    for (int i = 0; i < jsonArray.length(); i++) {
@@ -128,37 +125,34 @@ public class Main2Activity extends AppCompatActivity {
 //                                    startActivity(intent);
 
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Main2Activity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
-                        VolleyLog.e("Error: ", error.getMessage());
                     }
-                }) {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-//
-                        HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Authorization", "Bearer " + G.token);
-                        headers.put("X-Backtory-Object-Storage-Id", "5a9314fce4b092a32b632af9");
-                        return headers;
-                    }
-
-                };
-                requestQueue.add(req);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Main2Activity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
             }
 
-        });
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+//
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + G.token);
+                headers.put("X-Backtory-Object-Storage-Id", "5a9314fce4b092a32b632af9");
+                return headers;
+            }
+
+        };
+        requestQueue.add(req);
 
     }
 

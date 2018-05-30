@@ -1,13 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="ir.mohammadi.taskmanager.TaskActivity"
     tools:showIn="@layout/app_bar_task">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/textview_border">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="عملیات"
+            android:textSize="20sp"
 
+            android:textColor="#000"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:textAlignment="center"
+            android:text="توضیح"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="موضوع"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -15,4 +48,4 @@
         tools:listitem="@layout/task_item">
 
     </ListView>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

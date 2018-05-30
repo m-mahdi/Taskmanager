@@ -2,8 +2,11 @@ package ir.mohammadi.taskmanager.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,101 +16,47 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.Inflater;
 
+import ir.mohammadi.taskmanager.G;
+import ir.mohammadi.taskmanager.MainActivity;
 import ir.mohammadi.taskmanager.R;
+import ir.mohammadi.taskmanager.RegisterActivity;
+import ir.mohammadi.taskmanager.TaskActivity;
 import ir.mohammadi.taskmanager.model.Task;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+import static com.android.volley.VolleyLog.TAG;
 
 public class TaskAdapter extends BaseAdapter {
 //
-//    private Context context;
-//    private ArrayList<Task> data;
-//    private LayoutInflater inflater;
-//
-//    public TaskAdapter(Context context, ArrayList<Task> data) {
-//        this.context = context;
-//        this.data = data;
-//        inflater=(LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return data.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//    public static class viewHolder{
-//        public TextView txtname;
-//        public TextView txtdescription;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-
-//        View vi =convertView;
-//        viewHolder holder=new viewHolder();
-//        if (vi==null){
-//            vi=inflater.inflate(R.layout.task_item,null);
-//            holder.txtname=(TextView) vi.findViewById(R.id.item_name);
-//            holder.txtdescription=(TextView) vi.findViewById(R.id.item_description);
-//            vi.setTag(holder);
-//        }
-//        else
-//            holder=(viewHolder) vi.getTag();
-//        if(data.size()>0){
-//
-//            Task task=data.get(position);
-//            holder.txtname.setText(task.getName());
-//            holder.txtdescription.setText(task.getDescription());
-//        }
-//        return vi;
-//        if (convertView == null)
-//            convertView = activity.getLayoutInflater().inflate(R.layout.task_item, null);
-//
-//
-//
-//        TextView text =(TextView)convertView.findViewById(R.id.txtAlertText);
-//
-//        JSONObject json_data = getItem(position);
-//        if(null!=json_data ){
-//            String jj=json_data.getString("f_name");
-//            text.setText(jj);
-//        }
-//
-//        return convertView;
-//
-//    }
-//
-//    @Nullable
-//    @Override
-//    public CharSequence[] getAutofillOptions() {
-//        return new CharSequence[0];
-//    }
-//}
     private LayoutInflater inflater;
     private List<Task> tasks;
     private Activity activity;
+    private Context mContext;
 
     public TaskAdapter(List<Task> tasks, Activity activity) {
         this.tasks = tasks;
         this.activity = activity;
         this.inflater = activity.getLayoutInflater();
+
+
     }
 
     @Override
@@ -126,7 +75,7 @@ public class TaskAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup parent) {
+    public View getView(final int i, View view, final ViewGroup parent) {
         final ViewHolder viewHolder;
         if (view == null){
             view = inflater.inflate(R.layout.task_item, null);
@@ -135,16 +84,72 @@ public class TaskAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        Task task = tasks.get(i);
+        final Task task = tasks.get(i);
 //        final Task task= (Task) getItem(i);
         viewHolder.name.setText(task.getName());
         viewHolder.description.setText(task.getDescription());
 
 
+        viewHolder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(activity, task.getId() + "", Toast.LENGTH_SHORT).show();
+                final String url = " https://api.backtory.com/object-storage/classes/tasks/"+task.getId();
+                final RequestQueue requestQueue = Volley.newRequestQueue(activity.getApplicationContext());
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userID",G.username);
+
+                JsonObjectRequest req = new JsonObjectRequest(Request.Method.DELETE,url, new JSONObject(params),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    VolleyLog.v("Response:%n %s", response.toString(4));
+                                    Toast.makeText(activity, "کار با موفقیت حذف شد.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(activity, TaskActivity.class);
+                                    activity.startActivity(intent);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(activity, "خطا رخ داده است لطفا بررسی نمایید.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "کار با موفقیت حذف شد.", Toast.LENGTH_SHORT).show();
+                        VolleyLog.e("Error: ", error.getMessage());
+                        Intent intent = new Intent(activity, TaskActivity.class);
+                        activity.startActivity(intent);
+
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+//
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Authorization", "Bearer " + G.token);
+                        headers.put("X-Backtory-Object-Storage-Id", "5a9314fce4b092a32b632af9");
+                        return headers;
+                    }
+
+                };
+                requestQueue.add(req);
+
+            }});
+
+
         return view;
 
-    }
-//    private BookApiService bookApiService;
+                                             }
+
 
     static class ViewHolder{
         TextView name;

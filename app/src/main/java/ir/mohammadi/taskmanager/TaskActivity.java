@@ -35,11 +35,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import ir.mohammadi.taskmanager.adapter.TaskAdapter;
 import ir.mohammadi.taskmanager.model.Task;
@@ -98,6 +100,67 @@ public class TaskActivity extends AppCompatActivity
 //        SharedPreferences preferences = getSharedPreferences("username_sp", MODE_PRIVATE);
 //        String usename = preferences.getString("user", null);
 
+
+//        --------------------------show task
+        final String url = "https://api.backtory.com/object-storage/classes/query/tasks";
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userID", G.username);
+        Log.i("test1393", "onClick: ");
+//
+
+        JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+                            Log.i("test1393", "onResponse: " + response.toString(4));
+
+                            JSONObject jsnobject = new JSONObject(response.toString());
+                            JSONArray jsonArray = jsnobject.getJSONArray("results");
+                            List<Task> tasks = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject explrObject = jsonArray.getJSONObject(i);
+                                Gson g = new Gson();
+                                HashMap<String,String> map  = new HashMap<>();
+                                Task map1= g.fromJson(explrObject.toString(), Task.class);
+                                tasks.add(map1);
+                            }
+                            adapter=new TaskAdapter(tasks,TaskActivity.this){
+
+                            };
+                            ListView listView = (ListView) findViewById(R.id.listView);
+                            listView.setAdapter(adapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TaskActivity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+//
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + G.token);
+                headers.put("X-Backtory-Object-Storage-Id", "5a9314fce4b092a32b632af9");
+                return headers;
+            }
+
+        };
+        requestQueue.add(req);
 
             }
     @Override
@@ -236,5 +299,10 @@ public class TaskActivity extends AppCompatActivity
         });
         alertDialog.getWindow().setBackgroundDrawable(getResources().getDrawable( R.drawable.rounded_linear));
         alertDialog.show();
+    }
+
+    public interface IMethodCaller{
+        void yourDesiredMethod();
+
     }
 }

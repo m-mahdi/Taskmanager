@@ -80,7 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "خطا رخ داده است لطفا مجدد تلاش نمایید.", Toast.LENGTH_SHORT).show();
                         VolleyLog.e("Error: ", error.getMessage());
                     }
-                }){
+                })
+                {
                     @Override
                     public String getBodyContentType() {
                         return "application/json; charset=utf-8";
